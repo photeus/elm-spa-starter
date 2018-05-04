@@ -56,7 +56,8 @@ var commonConfig = {
 // additional webpack settings for local env (when invoked by 'npm start')
 if (isDev === true) {
   module.exports = merge(commonConfig, {
-    entry: [
+      mode: 'development',
+      entry: [
       'webpack-dev-server/client?http://localhost:8080',
       entryPath
     ],
@@ -80,7 +81,7 @@ if (isDev === true) {
         }]
       }, {
         test: /\.(css|scss)$/,
-        use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader']
+        use: ['style-loader', 'css-loader']
       }]
     }
   });
@@ -89,6 +90,7 @@ if (isDev === true) {
 // additional webpack settings for prod env (when invoked via 'npm run build')
 if (isProd === true) {
   module.exports = merge(commonConfig, {
+    mode: 'production',
     entry: entryPath,
     module: {
       rules: [{
@@ -99,7 +101,7 @@ if (isProd === true) {
         test: /\.sc?ss$/,
         use: ExtractTextPlugin.extract({
           fallback: 'style-loader',
-          use: ['css-loader', 'postcss-loader', 'sass-loader']
+          use: ['css-loader']
         })
       }]
     },
