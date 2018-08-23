@@ -1,4 +1,4 @@
-module Views.Header exposing (..)
+module Views.Header exposing (pages, view)
 
 import Html exposing (Html, a, button, div, li, nav, span, text, ul)
 import Html.Attributes exposing (attribute, class, href, id, type_)

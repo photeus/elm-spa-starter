@@ -1,4 +1,4 @@
-module View exposing (..)
+module View exposing (notFoundView, page, view)
 
 import Html exposing (..)
 import Models exposing (..)

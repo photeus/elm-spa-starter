@@ -1,4 +1,4 @@
-module Routing exposing (..)
+module Routing exposing (matchers, onLinkClick, parseLocation, viewOneRoute, viewTwoRoute)
 
 import Html exposing (Attribute)
 import Html.Events exposing (onWithOptions)

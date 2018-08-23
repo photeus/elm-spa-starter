@@ -1,4 +1,4 @@
-module Views.Two exposing (..)
+module Views.Two exposing (view)
 
 import Html exposing (Html, div, h1, text)
 import Models exposing (Model)

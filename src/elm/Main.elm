@@ -1,4 +1,4 @@
-module Main exposing (..)
+module Main exposing (init, main, subscriptions)
 
 import Models exposing (..)
 import Msgs exposing (..)

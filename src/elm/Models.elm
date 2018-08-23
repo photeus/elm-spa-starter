@@ -1,4 +1,4 @@
-module Models exposing (..)
+module Models exposing (Model, Route(..), initialModel)
 
 
 type alias Model =
