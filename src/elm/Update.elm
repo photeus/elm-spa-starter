@@ -1,16 +1,30 @@
-module Update exposing (..)
+module Update exposing (update)
 
+import Browser exposing (..)
+import Browser.Navigation exposing (..)
 import Models exposing (..)
-import Msgs exposing (Msg)
-import Navigation
-import Routing exposing (parseLocation)
+import Msgs exposing (..)
+import Routing exposing (..)
+import Url exposing (Url)
+import View exposing (..)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        Msgs.OnLocationChange location ->
-            ( { model | route = parseLocation location }, Cmd.none )
+        LinkClicked urlRequest ->
+            case urlRequest of
+                Internal url ->
+                    ( { model | url = url }, pushUrl model.key (Url.toString url) )
 
-        Msgs.ChangeLocation path ->
-            ( model, Navigation.newUrl path )
+                External href ->
+                    let
+                        route =
+                            Routing.fromString href
+                    in
+                    Debug.log ("route: " ++ Debug.toString route)
+                        ( { model | route = Routing.fromString href }, load href )
+
+        UrlChanged url ->
+            Debug.log ("url changed: " ++ Url.toString url)
+                ( { model | route = fromUrl url }, Cmd.none )

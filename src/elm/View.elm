@@ -1,36 +1,46 @@
-module View exposing (..)
+module View exposing (notFoundView, page, view)
 
+import Browser
 import Html exposing (..)
 import Models exposing (..)
 import Msgs exposing (..)
+import Routing exposing (..)
 import Views.Header
 import Views.One
 import Views.Two
 
 
-view : Model -> Html Msg
+view : Model -> Browser.Document msg
 view model =
-    div []
+    { title = "Title"
+    , body =
         [ page model ]
+    }
 
 
-page : Model -> Html Msg
+page : Model -> Html msg
 page model =
-    div []
+    Debug.log (Debug.toString model)
+        div
+        []
         [ Views.Header.view
         , case model.route of
-            ViewOneRoute ->
-                Views.One.view model
+            Routing.Home ->
+                Debug.log "first"
+                    Views.One.view
+                    model
 
-            ViewTwoRoute ->
-                Views.Two.view model
+            Routing.Second ->
+                Debug.log "second"
+                    Views.Two.view
+                    model
 
-            NotFoundRoute ->
+            Routing.NotFound ->
                 notFoundView
         ]
 
 
-notFoundView : Html Msg
+notFoundView : Html msg
 notFoundView =
     div []
         [ text "Not found"

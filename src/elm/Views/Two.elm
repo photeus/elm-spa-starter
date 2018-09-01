@@ -1,11 +1,11 @@
-module Views.Two exposing (..)
+module Views.Two exposing (view)
 
 import Html exposing (Html, div, h1, text)
 import Models exposing (Model)
 import Msgs exposing (..)
 
 
-view : Model -> Html Msg
+view : Model -> Html msg
 view model =
     div []
         [ h1 []

@@ -1,8 +1,10 @@
-module Msgs exposing (..)
+module Msgs exposing (Msg(..))
 
-import Navigation exposing (Location)
+import Browser exposing (UrlRequest)
+import Routing exposing (Route)
+import Url exposing (Url)
 
 
 type Msg
-    = OnLocationChange Location
-    | ChangeLocation String
+    = LinkClicked UrlRequest
+    | UrlChanged Url

@@ -1,20 +1,18 @@
-module Main exposing (..)
+module Main exposing (init, main, subscriptions)
 
+import Browser exposing (application)
+import Browser.Navigation as Nav
 import Models exposing (..)
 import Msgs exposing (..)
-import Navigation exposing (Location)
 import Routing
 import Update exposing (update)
+import Url exposing (Url)
 import View exposing (view)
 
 
-init : Location -> ( Model, Cmd Msg )
-init location =
-    let
-        currentRoute =
-            Routing.parseLocation location
-    in
-    ( initialModel currentRoute, Cmd.none )
+init : flags -> Url -> Nav.Key -> ( Model, Cmd Msg )
+init maybeViewer url navKey =
+    ( Models.initialModel navKey url, Cmd.none )
 
 
 subscriptions : Model -> Sub Msg
@@ -22,12 +20,13 @@ subscriptions model =
     Sub.none
 
 
-main : Program Never Model Msg
+main : Program () Model Msg
 main =
-    Navigation.program
-        Msgs.OnLocationChange
+    application
         { init = init
         , view = view
         , update = update
         , subscriptions = subscriptions
+        , onUrlChange = UrlChanged
+        , onUrlRequest = LinkClicked
         }

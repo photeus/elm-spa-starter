@@ -3,4 +3,6 @@ require('./styles/custom.css');
 
 // inject bundled Elm app into div#main
 var Elm = require('../elm/Main');
-Elm.Main.embed(document.getElementById('main'));
+var app = Elm.Elm.Main.init({
+  node: document.getElementById('main')
+});
