@@ -3,10 +3,10 @@ module Views.Header exposing (pages, view)
 import Html exposing (Html, a, button, div, li, nav, span, text, ul)
 import Html.Attributes exposing (attribute, class, href, id, type_)
 import Msgs exposing (..)
-import Routing exposing (onLinkClick, viewOneRoute, viewTwoRoute)
+import Routing exposing (homeRoute, secondRoute)
 
 
-view : Html Msg
+view : Html msg
 view =
     nav [ class "navbar navbar-expand-lg navbar-dark bg-dark" ]
         [ button [ class "navbar-toggler", type_ "button", attribute "data-toggle" "collapse", attribute "data-target" "#navbarTogglerDemo01", attribute "aria-controls" "navbarTogglerDemo01", attribute "aria-expanded" "false", attribute "aria-label" "Toggle navigation" ]
@@ -18,7 +18,7 @@ view =
         ]
 
 
-pages : Html Msg
+pages : Html msg
 pages =
     div [ class "collapse navbar-collapse", id "navbarTogglerDemo01" ]
         [ a [ class "navbar-brand", href "/" ]
@@ -28,16 +28,14 @@ pages =
             [ li [ class "nav-item" ]
                 [ a
                     [ class "nav-link"
-                    , href viewOneRoute
-                    , onLinkClick (ChangeLocation viewOneRoute)
+                    , href homeRoute
                     ]
                     [ text "One", span [ class "sr-only" ] [] ]
                 ]
             , li [ class "nav-item" ]
                 [ a
                     [ class "nav-link"
-                    , href viewTwoRoute
-                    , onLinkClick (ChangeLocation viewTwoRoute)
+                    , href secondRoute
                     ]
                     [ text "Two", span [ class "sr-only" ] [] ]
                 ]

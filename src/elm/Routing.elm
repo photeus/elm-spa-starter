@@ -1,47 +1,46 @@
-module Routing exposing (matchers, onLinkClick, parseLocation, viewOneRoute, viewTwoRoute)
+module Routing exposing (Route(..), fromString, fromUrl, homeRoute, parser, secondRoute)
 
+import Browser.Navigation as Nav
 import Html exposing (Attribute)
-import Html.Events exposing (onWithOptions)
-import Json.Decode as Decode
-import Models exposing (Model, Route(..))
-import Navigation exposing (Location)
-import UrlParser exposing (..)
+import Html.Attributes as Attr
+import Url exposing (Url)
+import Url.Parser exposing ((</>), Parser, int, map, oneOf, parse, s, string, top)
 
 
-matchers : Parser (Route -> a) a
-matchers =
-    oneOf
-        [ map ViewOneRoute top
-        , map ViewTwoRoute (s "two")
-        ]
+type Route
+    = Home
+    | Second
+    | NotFound
 
 
-parseLocation : Location -> Route
-parseLocation location =
-    case UrlParser.parsePath matchers location of
-        Just route ->
-            route
-
-        Nothing ->
-            NotFoundRoute
-
-
-viewOneRoute : String
-viewOneRoute =
+homeRoute : String
+homeRoute =
     "/"
 
 
-viewTwoRoute : String
-viewTwoRoute =
-    "/two"
+secondRoute : String
+secondRoute =
+    "/second"
 
 
-onLinkClick : msg -> Attribute msg
-onLinkClick message =
-    let
-        options =
-            { stopPropagation = False
-            , preventDefault = True
-            }
-    in
-    onWithOptions "click" options (Decode.succeed message)
+parser : Parser (Route -> a) a
+parser =
+    oneOf
+        [ map Home top
+        , map Second (s "second")
+        ]
+
+
+fromString : String -> Route
+fromString string =
+    case Url.fromString string of
+        Nothing ->
+            NotFound
+
+        Just url ->
+            Maybe.withDefault NotFound (parse parser url)
+
+
+fromUrl : Url -> Route
+fromUrl url =
+    Maybe.withDefault NotFound (parse parser url)

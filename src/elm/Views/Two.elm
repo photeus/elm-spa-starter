@@ -5,7 +5,7 @@ import Models exposing (Model)
 import Msgs exposing (..)
 
 
-view : Model -> Html Msg
+view : Model -> Html msg
 view model =
     div []
         [ h1 []

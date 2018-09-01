@@ -56,8 +56,8 @@ var commonConfig = {
 // additional webpack settings for local env (when invoked by 'npm start')
 if (isDev === true) {
   module.exports = merge(commonConfig, {
-      mode: 'development',
-      entry: [
+    mode: 'development',
+    entry: [
       'webpack-dev-server/client?http://localhost:8080',
       entryPath
     ],
@@ -75,7 +75,6 @@ if (isDev === true) {
           loader: 'elm-webpack-loader',
           options: {
             verbose: true,
-            warn: true,
             debug: true
           }
         }]
