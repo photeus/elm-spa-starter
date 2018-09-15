@@ -1,11 +1,9 @@
-var path = require('path');
-var webpack = require('webpack');
-var merge = require('webpack-merge');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var autoprefixer = require('autoprefixer');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var CopyWebpackPlugin = require('copy-webpack-plugin');
-
+const path = require('path');
+const webpack = require('webpack');
+const merge = require('webpack-merge');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const autoprefixer = require('autoprefixer');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const prod = 'production';
 const dev = 'development';
@@ -15,7 +13,7 @@ const TARGET_ENV = process.env.npm_lifecycle_event === 'build' ? prod : dev;
 const isDev = TARGET_ENV == dev;
 const isProd = TARGET_ENV == prod;
 
-// entry and output path/filename variables
+// entry and output path/filename constiables
 const entryPath = path.join(__dirname, 'src/static/index.js');
 const outputPath = path.join(__dirname, 'dist');
 const outputFilename = isProd ? '[name]-[hash].js' : '[name].js'
@@ -23,7 +21,7 @@ const outputFilename = isProd ? '[name]-[hash].js' : '[name].js'
 console.log('WEBPACK GO! Building for ' + TARGET_ENV);
 
 // common webpack config (valid for dev and prod)
-var commonConfig = {
+const commonConfig = {
   output: {
     path: outputPath,
     filename: `static/js/${outputFilename}`,
@@ -97,34 +95,27 @@ if (isProd === true) {
         exclude: [/elm-stuff/, /node_modules/],
         use: 'elm-webpack-loader'
       }, {
-        test: /\.sc?ss$/,
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: ['css-loader']
-        })
+        test: /\.css$/,
+        use: [{
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              // you can specify a publicPath here
+              // by default it use publicPath in webpackOptions.output
+              publicPath: '../'
+            }
+          },
+          "css-loader"
+        ]
       }]
     },
     plugins: [
-      new ExtractTextPlugin({
-        filename: 'static/css/[name]-[hash].css',
-        allChunks: true,
-      }),
-      new CopyWebpackPlugin([{
-        from: 'src/static/img/',
-        to: 'static/img/'
-      }, {
-        from: 'src/favicon.ico'
-      }]),
-
-      // extract CSS into a separate file
-      // minify & mangle JS/CSS
-      new webpack.optimize.UglifyJsPlugin({
-        minimize: true,
-        compressor: {
-          warnings: false
-        }
-        // mangle:  true
+      new MiniCssExtractPlugin({
+        filename: "static/css/[name]-[hash].css",
+        chunkFilename: "[name]-[hash].css"
       })
-    ]
+    ],
+    optimization: {
+      minimize: true
+    }
   });
 }
